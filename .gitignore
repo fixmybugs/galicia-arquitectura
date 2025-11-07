@@ -15,10 +15,27 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
 
 # macOS-specific files
 .DS_Store
 
+# Windows
+Thumbs.db
+
 # jetbrains setting folder
 .idea/
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Temporary files
+*.tmp
+*.temp

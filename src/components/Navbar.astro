@@ -1,0 +1,240 @@
+---
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 transition-all duration-300" id="navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center space-x-2 group">
+        <span class="material-symbols-outlined text-3xl text-gray-900">apartment</span>
+        <div class="flex flex-col">
+          <span class="text-xl font-bold text-gray-900 tracking-tight">GALICIA</span>
+          <span class="text-xs text-gray-600 tracking-widest">ARQUITECTURA</span>
+        </div>
+      </a>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="/" class="nav-link">Inicio</a>
+        <a href="/proyectos" class="nav-link">Proyectos</a>
+        <a href="/acerca" class="nav-link">Acerca de</a>
+        <a href="/contacto" class="nav-link">Contacto</a>
+      </div>
+
+      <!-- CTA Button Desktop -->
+      <div class="hidden md:block">
+        <a href="/contacto" class="btn-primary">
+          <span>Consulta Gratis</span>
+          <span class="material-symbols-outlined text-lg">arrow_forward</span>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="md:hidden text-gray-900" id="mobile-menu-btn">
+        <span class="material-symbols-outlined text-3xl">menu</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="md:hidden" id="mobile-menu">
+    <div class="mobile-menu-content px-4 pt-2 pb-6 space-y-3 bg-white border-t border-gray-200">
+      <a href="/" class="mobile-nav-link menu-item">Inicio</a>
+      <a href="/proyectos" class="mobile-nav-link menu-item">Proyectos</a>
+      <a href="/acerca" class="mobile-nav-link menu-item">Acerca de</a>
+      <a href="/contacto" class="mobile-nav-link menu-item">Contacto</a>
+      <a href="/contacto" class="btn-primary w-full justify-center mt-4 menu-item">
+        <span>Consulta Gratis</span>
+        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  .nav-link {
+    @apply text-gray-700 font-medium text-sm tracking-wide uppercase transition-colors duration-200 hover:text-gray-900 relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .mobile-nav-link {
+    @apply block py-3 text-gray-700 font-medium text-base border-l-4 border-transparent pl-4 transition-all duration-200 hover:border-gray-900 hover:text-gray-900;
+  }
+
+  .btn-primary {
+    @apply flex items-center gap-2 bg-gray-900 text-white px-6 py-3 text-sm font-semibold tracking-wide uppercase transition-all duration-300 hover:bg-gray-800 hover:shadow-lg;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24
+  }
+
+  /* Mobile Menu Animations */
+  .mobile-menu-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                opacity 0.3s ease-in-out,
+                transform 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  .mobile-menu-content.open {
+    max-height: 500px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Menu Items Animation */
+  .menu-item {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.3s ease-in-out, 
+                transform 0.3s ease-in-out,
+                border-color 0.2s ease-in-out;
+  }
+
+  .menu-item.show {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* Stagger animation for menu items */
+  .menu-item:nth-child(1) { transition-delay: 0.1s; }
+  .menu-item:nth-child(2) { transition-delay: 0.15s; }
+  .menu-item:nth-child(3) { transition-delay: 0.2s; }
+  .menu-item:nth-child(4) { transition-delay: 0.25s; }
+  .menu-item:nth-child(5) { transition-delay: 0.3s; }
+
+  /* Menu button animation */
+  #mobile-menu-btn {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  #mobile-menu-btn:active {
+    transform: scale(0.95);
+  }
+
+  #mobile-menu-btn .material-symbols-outlined {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  #mobile-menu-btn.open .material-symbols-outlined {
+    transform: rotate(90deg);
+  }
+</style>
+
+<script>
+  // Mobile menu toggle with animations
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuContent = mobileMenu?.querySelector('.mobile-menu-content');
+  const menuItems = mobileMenu?.querySelectorAll('.menu-item');
+  const menuIcon = mobileMenuBtn?.querySelector('.material-symbols-outlined');
+
+  let isMenuOpen = false;
+
+  mobileMenuBtn?.addEventListener('click', () => {
+    isMenuOpen = !isMenuOpen;
+    
+    if (isMenuOpen) {
+      // Abrir menú
+      mobileMenu?.classList.remove('hidden');
+      mobileMenuBtn?.classList.add('open');
+      
+      // Animar el contenedor
+      setTimeout(() => {
+        menuContent?.classList.add('open');
+      }, 10);
+      
+      // Animar items uno por uno
+      menuItems?.forEach((item, index) => {
+        setTimeout(() => {
+          item?.classList.add('show');
+        }, 100 + (index * 50));
+      });
+      
+      // Cambiar icono
+      if (menuIcon) {
+        menuIcon.textContent = 'close';
+      }
+      
+    } else {
+      // Cerrar menú
+      menuContent?.classList.remove('open');
+      mobileMenuBtn?.classList.remove('open');
+      
+      // Quitar animación de items
+      menuItems?.forEach(item => {
+        item?.classList.remove('show');
+      });
+      
+      // Cambiar icono
+      if (menuIcon) {
+        menuIcon.textContent = 'menu';
+      }
+      
+      // Ocultar menú después de la animación
+      setTimeout(() => {
+        mobileMenu?.classList.add('hidden');
+      }, 300);
+    }
+  });
+
+  // Cerrar menú al hacer clic en un enlace
+  const menuLinks = mobileMenu?.querySelectorAll('a');
+  menuLinks?.forEach(link => {
+    link?.addEventListener('click', () => {
+      if (isMenuOpen) {
+        // Simular clic en el botón para cerrar
+        mobileMenuBtn?.click();
+      }
+    });
+  });
+
+  // Cerrar menú al hacer scroll
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    if (isMenuOpen) {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        mobileMenuBtn?.click();
+      }, 150);
+    }
+  });
+
+  // Navbar scroll effect
+  let lastScroll = 0;
+  const navbar = document.getElementById('navbar');
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll <= 0) {
+      navbar?.classList.remove('shadow-md');
+    } else {
+      navbar?.classList.add('shadow-md');
+    }
+
+    lastScroll = currentScroll;
+  });
+</script>

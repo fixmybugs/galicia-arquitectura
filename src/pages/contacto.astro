@@ -1,0 +1,342 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import FooterModern from '../components/FooterModern.astro';
+---
+
+<Layout>
+  <Navbar />
+  
+  <!-- Hero Section -->
+  <section class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-gray-900 text-white px-4 py-2 text-xs font-semibold tracking-widest uppercase mb-6">
+          <span class="material-symbols-outlined text-sm">mail</span>
+          <span>Contacto</span>
+        </div>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">
+          Hablemos de tu Proyecto
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          Estamos aquí para ayudarte a convertir tu visión en realidad. Contacta con nosotros hoy mismo
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid lg:grid-cols-5 gap-12">
+        <!-- Contact Info - 2 columns -->
+        <div class="lg:col-span-2 space-y-8">
+          <div>
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">
+              Información de Contacto
+            </h2>
+            <p class="text-gray-600 mb-8">
+              Estamos disponibles para responder todas tus preguntas y comenzar tu proyecto.
+            </p>
+          </div>
+
+          <!-- Contact Cards -->
+          <div class="space-y-6">
+            <div class="contact-card group">
+              <div class="icon-box">
+                <span class="material-symbols-outlined">mail</span>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900 mb-1 text-sm uppercase tracking-wider">Email</h3>
+                <a href="mailto:info@galicia.com" class="text-gray-600 hover:text-gray-900 transition-colors">
+                  info@galicia.com
+                </a>
+              </div>
+            </div>
+
+            <div class="contact-card group">
+              <div class="icon-box">
+                <span class="material-symbols-outlined">call</span>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900 mb-1 text-sm uppercase tracking-wider">Teléfono</h3>
+                <a href="tel:+50255555555" class="text-gray-600 hover:text-gray-900 transition-colors">
+                  +502 5555 5555
+                </a>
+              </div>
+            </div>
+
+            <div class="contact-card group">
+              <div class="icon-box">
+                <span class="material-symbols-outlined">location_on</span>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900 mb-1 text-sm uppercase tracking-wider">Ubicación</h3>
+                <p class="text-gray-600">
+                  Guatemala City, Guatemala
+                </p>
+              </div>
+            </div>
+
+            <div class="contact-card group">
+              <div class="icon-box">
+                <span class="material-symbols-outlined">schedule</span>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900 mb-1 text-sm uppercase tracking-wider">Horario</h3>
+                <p class="text-gray-600">
+                  Lunes - Viernes<br/>
+                  9:00 - 18:00
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="pt-8 border-t border-gray-200">
+            <h3 class="font-semibold text-gray-900 mb-4 text-sm uppercase tracking-wider">Síguenos</h3>
+            <div class="flex gap-4">
+              <a href="#" class="social-icon">
+                <span class="material-symbols-outlined">link</span>
+              </a>
+              <a href="#" class="social-icon">
+                <span class="material-symbols-outlined">mail</span>
+              </a>
+              <a href="#" class="social-icon">
+                <span class="material-symbols-outlined">phone</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form - 3 columns -->
+        <div class="lg:col-span-3">
+          <div class="bg-gray-50 rounded-lg p-8 sm:p-12 border border-gray-200">
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Envíanos un Mensaje</h3>
+            <p class="text-gray-600 mb-8">
+              Completa el formulario y nos pondremos en contacto contigo lo antes posible
+            </p>
+            
+            <form class="space-y-6">
+              <div class="grid sm:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">
+                    Nombre *
+                  </label>
+                  <input 
+                    type="text" 
+                    required
+                    class="form-input"
+                    placeholder="Juan"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">
+                    Apellido *
+                  </label>
+                  <input 
+                    type="text" 
+                    required
+                    class="form-input"
+                    placeholder="Pérez"
+                  />
+                </div>
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">
+                    Email *
+                  </label>
+                  <input 
+                    type="email" 
+                    required
+                    class="form-input"
+                    placeholder="ejemplo@correo.com"
+                  />
+                </div>
+
+                <div>
+                  <label class="block text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">
+                    Teléfono
+                  </label>
+                  <input 
+                    type="tel" 
+                    class="form-input"
+                    placeholder="+502 1234 5678"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">
+                  Tipo de Proyecto *
+                </label>
+                <select required class="form-input">
+                  <option value="">Selecciona una opción</option>
+                  <option>Diseño Arquitectónico</option>
+                  <option>Construcción</option>
+                  <option>Remodelación</option>
+                  <option>Consultoría</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">
+                  Presupuesto Estimado
+                </label>
+                <select class="form-input">
+                  <option value="">Selecciona un rango</option>
+                  <option>Menos de Q400,000</option>
+                  <option>Q400,000 - Q800,000</option>
+                  <option>Q800,000 - Q2,000,000</option>
+                  <option>Q2,000,000 - Q4,000,000</option>
+                  <option>Más de Q4,000,000</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-gray-900 mb-2 uppercase tracking-wide">
+                  Mensaje *
+                </label>
+                <textarea 
+                  required
+                  rows="5"
+                  class="form-input resize-none"
+                  placeholder="Cuéntanos sobre tu proyecto, tus ideas y objetivos..."
+                ></textarea>
+              </div>
+
+              <div class="flex items-start gap-3">
+                <input 
+                  type="checkbox" 
+                  id="terms"
+                  required
+                  class="mt-1"
+                />
+                <label for="terms" class="text-sm text-gray-600">
+                  Acepto la política de privacidad y autorizo el tratamiento de mis datos personales para ser contactado
+                </label>
+              </div>
+
+              <button type="submit" class="btn-primary w-full group">
+                <span>Enviar Mensaje</span>
+                <span class="material-symbols-outlined text-lg transform group-hover:translate-x-1 transition-transform">send</span>
+              </button>
+
+              <p class="text-xs text-gray-500 text-center">
+                * Campos obligatorios
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-7xl mx-auto">
+      <div class="bg-gray-300 rounded-lg h-96 flex items-center justify-center">
+        <div class="text-center text-gray-600">
+          <span class="material-symbols-outlined text-6xl mb-4">map</span>
+          <p class="text-lg">Mapa de ubicación</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+          Preguntas Frecuentes
+        </h2>
+        <p class="text-lg text-gray-600">
+          Respuestas a las dudas más comunes sobre nuestros servicios
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        <div class="faq-card">
+          <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-gray-600">help</span>
+            ¿Cuánto tiempo toma un proyecto típico?
+          </h3>
+          <p class="text-gray-600 pl-8">
+            El tiempo varía según la complejidad del proyecto. Un diseño residencial típico toma de 3-6 meses, mientras que proyectos comerciales pueden extenderse de 6-12 meses.
+          </p>
+        </div>
+
+        <div class="faq-card">
+          <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-gray-600">help</span>
+            ¿Ofrecen consultas gratuitas?
+          </h3>
+          <p class="text-gray-600 pl-8">
+            Sí, ofrecemos una consulta inicial gratuita para discutir tu proyecto y entender tus necesidades.
+          </p>
+        </div>
+
+        <div class="faq-card">
+          <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-gray-600">help</span>
+            ¿Trabajan fuera de la Ciudad de Guatemala?
+          </h3>
+          <p class="text-gray-600 pl-8">
+            Aunque nuestra base está en la Ciudad de Guatemala, estamos abiertos a proyectos en todo el país según disponibilidad.
+          </p>
+        </div>
+
+        <div class="faq-card">
+          <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+            <span class="material-symbols-outlined text-gray-600">help</span>
+            ¿Qué documentación necesito para comenzar?
+          </h3>
+          <p class="text-gray-600 pl-8">
+            Para iniciar, necesitamos información básica sobre el terreno o propiedad, presupuesto estimado y tus ideas principales. Nuestro equipo te guiará en el proceso.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FooterModern />
+</Layout>
+
+<style>
+  .contact-card {
+    @apply flex items-start gap-4 p-6 bg-white border border-gray-200 rounded-lg transition-all duration-300 hover:shadow-lg hover:border-gray-300;
+  }
+
+  .icon-box {
+    @apply w-12 h-12 bg-gray-900 text-white rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-gray-800 group-hover:scale-110;
+  }
+
+  .social-icon {
+    @apply w-12 h-12 bg-gray-900 text-white rounded-lg flex items-center justify-center transition-all duration-300 hover:bg-gray-800 hover:scale-110;
+  }
+
+  .form-input {
+    @apply w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent transition-all;
+  }
+
+  .faq-card {
+    @apply p-6 bg-gray-50 border border-gray-200 rounded-lg;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-gray-900 text-white px-8 py-4 text-sm font-semibold tracking-wide uppercase transition-all duration-300 hover:bg-gray-800 hover:shadow-lg;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24
+  }
+</style>

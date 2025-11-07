@@ -1,0 +1,189 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import FooterModern from '../components/FooterModern.astro';
+
+const projects = [
+  {
+    title: "Casa Moderna Minimalista",
+    category: "Residencial",
+    location: "Guatemala City, Guatemala",
+    year: "2024",
+    area: "280 m²",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
+    description: "Vivienda unifamiliar con diseño minimalista y espacios abiertos que maximizan la luz natural."
+  },
+  {
+    title: "Oficinas Corporativas Centro",
+    category: "Comercial",
+    location: "Zona 10, Guatemala",
+    year: "2023",
+    area: "450 m²",
+    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
+    description: "Espacio de trabajo moderno con áreas colaborativas y diseño sostenible."
+  },
+  {
+    title: "Villa Contemporánea",
+    category: "Residencial",
+    location: "Antigua Guatemala",
+    year: "2024",
+    area: "420 m²",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
+    description: "Residencia de lujo con vistas panorámicas y acabados de alta gama."
+  },
+  {
+    title: "Loft Industrial Renovado",
+    category: "Remodelación",
+    location: "Cayalá, Guatemala",
+    year: "2023",
+    area: "180 m²",
+    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop&auto=format&ixlib=rb-4.0.3",
+    description: "Transformación de espacio industrial en vivienda contemporánea."
+  },
+  {
+    title: "Casa de Campo Sostenible",
+    category: "Residencial",
+    location: "Panajachel, Sololá",
+    year: "2024",
+    area: "320 m²",
+    image: "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=800&h=600&fit=crop",
+    description: "Vivienda ecológica integrada en el entorno natural con tecnologías verdes."
+  },
+  {
+    title: "Restaurante Boutique",
+    category: "Comercial",
+    location: "Quetzaltenango",
+    year: "2023",
+    area: "250 m²",
+    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop",
+    description: "Espacio gastronómico con diseño elegante y atmósfera íntima."
+  }
+];
+
+const categories = ["Todos", "Residencial", "Comercial", "Remodelación"];
+---
+
+<Layout>
+  <Navbar />
+  
+  <!-- Hero Section -->
+  <section class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-gray-900 text-white px-4 py-2 text-xs font-semibold tracking-widest uppercase mb-6">
+          <span class="material-symbols-outlined text-sm">photo_library</span>
+          <span>Portafolio</span>
+        </div>
+        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">
+          Nuestros Proyectos
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          Una selección de nuestros trabajos más destacados que demuestran nuestra experiencia y compromiso con la excelencia
+        </p>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="flex flex-wrap justify-center gap-4 mb-16">
+        {categories.map((category) => (
+          <button class="filter-btn">
+            {category}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Grid -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {projects.map((project) => (
+          <div class="project-card group">
+            <div class="relative overflow-hidden rounded-lg aspect-[4/3]">
+              <img 
+                src={project.image}
+                alt={project.title}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div class="text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                  <p class="text-sm mb-2">{project.description}</p>
+                  <span class="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider">
+                    <span class="material-symbols-outlined text-sm">visibility</span>
+                    Ver Detalles
+                  </span>
+                </div>
+              </div>
+              <div class="absolute top-4 right-4 bg-white text-gray-900 px-3 py-1 text-xs font-bold uppercase tracking-wider">
+                {project.category}
+              </div>
+            </div>
+            <div class="pt-6">
+              <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-gray-700 transition-colors">
+                {project.title}
+              </h3>
+              <div class="space-y-2 text-sm text-gray-600">
+                <p class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm">location_on</span>
+                  {project.location}
+                </p>
+                <p class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm">straighten</span>
+                  {project.area}
+                </p>
+                <p class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm">calendar_today</span>
+                  {project.year}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+        ¿Listo para tu Próximo Proyecto?
+      </h2>
+      <p class="text-lg text-gray-600 mb-8">
+        Conversemos sobre cómo podemos ayudarte a hacer realidad tu visión arquitectónica
+      </p>
+      <a href="/contacto" class="btn-primary group">
+        <span>Contactar Ahora</span>
+        <span class="material-symbols-outlined text-lg transform group-hover:translate-x-1 transition-transform">arrow_forward</span>
+      </a>
+    </div>
+  </section>
+
+  <FooterModern />
+</Layout>
+
+<style>
+  .project-card {
+    @apply bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl;
+  }
+
+  .filter-btn {
+    @apply px-6 py-3 text-sm font-semibold tracking-wide uppercase border-2 border-gray-900 transition-all duration-300 hover:bg-gray-900 hover:text-white;
+  }
+
+  .filter-btn.active {
+    @apply bg-gray-900 text-white;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-gray-900 text-white px-8 py-4 text-sm font-semibold tracking-wide uppercase transition-all duration-300 hover:bg-gray-800 hover:shadow-lg;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24
+  }
+</style>
