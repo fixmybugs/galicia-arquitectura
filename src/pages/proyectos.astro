@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import FooterModern from '../components/FooterModern.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 
 // Import ALL images from gallery folders
 const allImages = import.meta.glob('/src/assets/gallery/**/*.webp', { eager: true });
@@ -46,15 +46,33 @@ Object.entries(allImages).forEach(([path, image]) => {
   }
 });
 
-// Convert Map to Array and sort
-const projects = Array.from(projectsMap.values())
+// Convert Map to Array, sort, and optimize images
+const projectsPromises = Array.from(projectsMap.values())
   .sort((a, b) => a.rank - b.rank)
-  .map(p => ({
-    ...p,
-    // Ensure portrait is first in gallery for the viewer if it's not there, or just use gallery
-    // We'll combine them for the lightbox: portrait first, then the rest
-    fullGallery: [p.portrait, ...p.gallery].filter(Boolean)
-  }));
+  .map(async (p) => {
+    // Generate optimized URLs for Lightbox
+    // We assume p.portrait is defined, if not we skip
+    let fullGallery = [];
+    
+    if (p.portrait) {
+      const portraitOpt = await getImage({ src: p.portrait, format: 'webp', width: 1920, quality: 85 });
+      fullGallery.push(portraitOpt.src);
+    }
+
+    const galleryPromises = p.gallery.map(img => 
+      getImage({ src: img, format: 'webp', width: 1920, quality: 85 })
+    );
+    const galleryOpt = await Promise.all(galleryPromises);
+    
+    galleryOpt.forEach(img => fullGallery.push(img.src));
+
+    return {
+      ...p,
+      fullGallery // Array of strings (URLs)
+    };
+  });
+
+const projects = await Promise.all(projectsPromises);
 
 const categories = ["Todos", "Residencial"];
 ---
@@ -156,7 +174,12 @@ const categories = ["Todos", "Residencial"];
     </button>
 
     <div class="relative w-full h-full flex items-center justify-center p-4 md:p-12">
-      <img id="lightbox-image" src="" alt="Gallery View" class="max-h-full max-w-full object-contain shadow-2xl" />
+      <!-- Loader -->
+      <div id="lightbox-loader" class="absolute inset-0 flex items-center justify-center z-10 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="w-12 h-12 border-4 border-gray-600 border-t-white rounded-full animate-spin"></div>
+      </div>
+
+      <img id="lightbox-image" src="" alt="Gallery View" class="max-h-full max-w-full object-contain shadow-2xl transition-opacity duration-300" />
       <div class="absolute bottom-4 left-0 right-0 text-center text-white pointer-events-none">
         <h3 id="lightbox-title" class="text-xl font-bold mb-1"></h3>
         <p id="lightbox-counter" class="text-sm text-gray-400 font-mono"></p>
@@ -218,6 +241,7 @@ const categories = ["Todos", "Residencial"];
     // Lightbox Logic
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-image');
+    const lightboxLoader = document.getElementById('lightbox-loader');
     const lightboxTitle = document.getElementById('lightbox-title');
     const lightboxCounter = document.getElementById('lightbox-counter');
     const closeBtn = document.getElementById('close-lightbox');
@@ -260,22 +284,42 @@ const categories = ["Todos", "Residencial"];
       setTimeout(() => {
         lightbox.classList.add('hidden');
         document.body.style.overflow = '';
+        lightboxImg.src = ''; // Clear source
       }, 300);
     }
 
     function updateLightboxContent() {
       const project = window.projectsData[currentProjectIndex];
-      const imageSrc = currentGallery[currentImageIndex].src;
+      const imageSrc = currentGallery[currentImageIndex];
       
-      // Fade out image
+      // Show loader, hide image
+      lightboxLoader.classList.remove('opacity-0');
       lightboxImg.style.opacity = '0.5';
       
-      setTimeout(() => {
+      // Create a temp image to preload
+      const img = new Image();
+      img.src = imageSrc;
+      
+      img.onload = () => {
         lightboxImg.src = imageSrc;
         lightboxTitle.textContent = project.title;
         lightboxCounter.textContent = `${currentImageIndex + 1} / ${currentGallery.length}`;
+        
+        // Hide loader, show image
+        lightboxLoader.classList.add('opacity-0');
         lightboxImg.style.opacity = '1';
-      }, 150);
+        
+        // Preload next/prev
+        preloadImages();
+      };
+    }
+
+    function preloadImages() {
+      const nextIndex = (currentImageIndex + 1) % currentGallery.length;
+      const prevIndex = (currentImageIndex - 1 + currentGallery.length) % currentGallery.length;
+      
+      new Image().src = currentGallery[nextIndex];
+      new Image().src = currentGallery[prevIndex];
     }
 
     function nextImage() {
