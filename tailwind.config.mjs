@@ -4,7 +4,7 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['IBM Plex Sans', 'sans-serif'],
+				sans: ['DIN Pro', 'sans-serif'],
 			},
 		},
 	},

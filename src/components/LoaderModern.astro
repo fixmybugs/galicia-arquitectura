@@ -1,10 +1,21 @@
 ---
 // Componente Loader con animación de texto - Solo página de inicio
+import squares from '../assets/squares.PNG';
+import { Image } from 'astro:assets';
 ---
 
 <div id="loader" class="fixed inset-0 z-[9999] bg-white flex items-center justify-center overflow-hidden">
   <!-- Content -->
-  <div class="relative z-10 text-center">
+  <div class="relative z-10 text-center flex flex-col items-center gap-6">
+    <!-- Logo Image Animation -->
+    <div class="logo-container w-24 h-24 md:w-32 md:h-32">
+      <Image 
+        src={squares} 
+        alt="Galicia Arquitectura Logo" 
+        class="w-full h-full object-contain logo-animation"
+      />
+    </div>
+
     <!-- Logo/Title Animation -->
     <div class="space-y-2 sm:space-y-4">
       <!-- GALICIA - Grande -->
@@ -42,6 +53,24 @@
 </div>
 
 <style>
+  /* Logo Animation */
+  .logo-animation {
+    opacity: 0;
+    transform: scale(0.8) rotate(-90deg);
+    animation: logoReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes logoReveal {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) rotate(-90deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+
   /* Letter Animation */
   .letter-animation {
     display: inline-block;

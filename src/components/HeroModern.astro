@@ -1,4 +1,6 @@
 ---
+import indexImage from '../assets/index_image.webp';
+import { Image } from 'astro:assets';
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-20">
@@ -57,10 +59,12 @@
       <!-- Image -->
       <div class="relative animate-fade-in-right">
         <div class="relative z-10">
-          <img 
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop" 
+          <Image 
+            src={indexImage} 
             alt="Modern Architecture" 
             class="w-full h-auto rounded-lg shadow-2xl"
+            width={800}
+            height={1000}
           />
         </div>
         <!-- Decorative elements -->

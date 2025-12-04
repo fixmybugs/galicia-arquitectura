@@ -2,65 +2,61 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import FooterModern from '../components/FooterModern.astro';
+import { Image } from 'astro:assets';
 
-const projects = [
-  {
-    title: "Casa Moderna Minimalista",
-    category: "Residencial",
-    location: "Guatemala City, Guatemala",
-    year: "2024",
-    area: "280 m²",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=600&fit=crop",
-    description: "Vivienda unifamiliar con diseño minimalista y espacios abiertos que maximizan la luz natural."
-  },
-  {
-    title: "Oficinas Corporativas Centro",
-    category: "Comercial",
-    location: "Zona 10, Guatemala",
-    year: "2023",
-    area: "450 m²",
-    image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop",
-    description: "Espacio de trabajo moderno con áreas colaborativas y diseño sostenible."
-  },
-  {
-    title: "Villa Contemporánea",
-    category: "Residencial",
-    location: "Antigua Guatemala",
-    year: "2024",
-    area: "420 m²",
-    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&h=600&fit=crop",
-    description: "Residencia de lujo con vistas panorámicas y acabados de alta gama."
-  },
-  {
-    title: "Loft Industrial Renovado",
-    category: "Remodelación",
-    location: "Cayalá, Guatemala",
-    year: "2023",
-    area: "180 m²",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&h=600&fit=crop&auto=format&ixlib=rb-4.0.3",
-    description: "Transformación de espacio industrial en vivienda contemporánea."
-  },
-  {
-    title: "Casa de Campo Sostenible",
-    category: "Residencial",
-    location: "Panajachel, Sololá",
-    year: "2024",
-    area: "320 m²",
-    image: "https://images.unsplash.com/photo-1600585154363-67eb9e2e2099?w=800&h=600&fit=crop",
-    description: "Vivienda ecológica integrada en el entorno natural con tecnologías verdes."
-  },
-  {
-    title: "Restaurante Boutique",
-    category: "Comercial",
-    location: "Quetzaltenango",
-    year: "2023",
-    area: "250 m²",
-    image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&h=600&fit=crop",
-    description: "Espacio gastronómico con diseño elegante y atmósfera íntima."
+// Import ALL images from gallery folders
+const allImages = import.meta.glob('/src/assets/gallery/**/*.webp', { eager: true });
+
+// Helper to organize images by project
+const projectsMap = new Map();
+
+Object.entries(allImages).forEach(([path, image]) => {
+  const parts = path.split('/');
+  const galleryIndex = parts.indexOf('gallery');
+  const folderName = parts[galleryIndex + 1]; // e.g. "1_lopes"
+  
+  if (!projectsMap.has(folderName)) {
+    const [rankStr, ...nameParts] = folderName.split('_');
+    const title = nameParts.join(' ').replace(/\b\w/g, l => l.toUpperCase());
+    
+    // Force all projects to be Residencial as requested
+    let category = "Residencial";
+
+    projectsMap.set(folderName, {
+      id: folderName,
+      rank: parseInt(rankStr),
+      title,
+      category,
+      location: "Guatemala",
+      year: "2024",
+      area: "N/A",
+      description: "Diseño arquitectónico exclusivo enfocado en la funcionalidad y estética contemporánea.",
+      portrait: null,
+      gallery: []
+    });
   }
-];
 
-const categories = ["Todos", "Residencial", "Comercial", "Remodelación"];
+  const project = projectsMap.get(folderName);
+  const fileName = parts[parts.length - 1];
+
+  if (fileName === 'portrait.webp') {
+    project.portrait = image.default;
+  } else {
+    project.gallery.push(image.default);
+  }
+});
+
+// Convert Map to Array and sort
+const projects = Array.from(projectsMap.values())
+  .sort((a, b) => a.rank - b.rank)
+  .map(p => ({
+    ...p,
+    // Ensure portrait is first in gallery for the viewer if it's not there, or just use gallery
+    // We'll combine them for the lightbox: portrait first, then the rest
+    fullGallery: [p.portrait, ...p.gallery].filter(Boolean)
+  }));
+
+const categories = ["Todos", "Residencial"];
 ---
 
 <Layout>
@@ -85,7 +81,7 @@ const categories = ["Todos", "Residencial", "Comercial", "Remodelación"];
       <!-- Filter Buttons -->
       <div class="flex flex-wrap justify-center gap-4 mb-16">
         {categories.map((category) => (
-          <button class="filter-btn">
+          <button class="filter-btn" data-category={category}>
             {category}
           </button>
         ))}
@@ -96,22 +92,24 @@ const categories = ["Todos", "Residencial", "Comercial", "Remodelación"];
   <!-- Projects Grid -->
   <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
     <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project) => (
-          <div class="project-card group">
-            <div class="relative overflow-hidden rounded-lg aspect-[4/3]">
-              <img 
-                src={project.image}
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+        {projects.map((project, index) => (
+          <div class="project-card group" data-category={project.category} data-project-index={index}>
+            <div class="relative overflow-hidden rounded-lg aspect-[3/4] cursor-pointer open-lightbox">
+              <Image 
+                src={project.portrait}
                 alt={project.title}
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                width={800}
+                height={1000}
               />
               <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                 <div class="text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                   <p class="text-sm mb-2">{project.description}</p>
-                  <span class="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider">
+                  <button class="inline-flex items-center gap-2 bg-white text-gray-900 px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors rounded-sm">
                     <span class="material-symbols-outlined text-sm">visibility</span>
-                    Ver Detalles
-                  </span>
+                    Ver Más
+                  </button>
                 </div>
               </div>
               <div class="absolute top-4 right-4 bg-white text-gray-900 px-3 py-1 text-xs font-bold uppercase tracking-wider">
@@ -142,6 +140,225 @@ const categories = ["Todos", "Residencial", "Comercial", "Remodelación"];
       </div>
     </div>
   </section>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center">
+    <button id="close-lightbox" class="absolute top-4 right-4 text-white hover:text-gray-300 z-50 p-2">
+      <span class="material-symbols-outlined text-4xl">close</span>
+    </button>
+    
+    <button id="prev-image" class="absolute left-4 text-white hover:text-gray-300 z-50 p-4 hidden md:block">
+      <span class="material-symbols-outlined text-5xl">chevron_left</span>
+    </button>
+    
+    <button id="next-image" class="absolute right-4 text-white hover:text-gray-300 z-50 p-4 hidden md:block">
+      <span class="material-symbols-outlined text-5xl">chevron_right</span>
+    </button>
+
+    <div class="relative w-full h-full flex items-center justify-center p-4 md:p-12">
+      <img id="lightbox-image" src="" alt="Gallery View" class="max-h-full max-w-full object-contain shadow-2xl" />
+      <div class="absolute bottom-4 left-0 right-0 text-center text-white pointer-events-none">
+        <h3 id="lightbox-title" class="text-xl font-bold mb-1"></h3>
+        <p id="lightbox-counter" class="text-sm text-gray-400 font-mono"></p>
+      </div>
+
+      <!-- Swipe Hint (Mobile Only) -->
+      <div id="swipe-hint" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-500 md:hidden">
+        <div class="bg-black/50 backdrop-blur-sm rounded-full p-6 animate-pulse">
+          <span class="material-symbols-outlined text-6xl text-white animate-swipe">gesture_select</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    @keyframes swipe {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-20px); }
+    }
+    .animate-swipe {
+      animation: swipe 1.5s infinite ease-in-out;
+    }
+  </style>
+
+  <!-- Hidden data for JS -->
+  <script define:vars={{ projects }}>
+    window.projectsData = projects;
+  </script>
+
+  <script>
+    // Filtering Logic
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active state
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const category = btn.dataset.category;
+
+        projectCards.forEach(card => {
+          if (category === 'Todos' || card.dataset.category === category) {
+            card.style.display = 'block';
+            // Add fade in animation
+            card.style.opacity = '0';
+            setTimeout(() => card.style.opacity = '1', 50);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Set initial active state
+    document.querySelector('.filter-btn').classList.add('active');
+
+    // Lightbox Logic
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-image');
+    const lightboxTitle = document.getElementById('lightbox-title');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+    const closeBtn = document.getElementById('close-lightbox');
+    const prevBtn = document.getElementById('prev-image');
+    const nextBtn = document.getElementById('next-image');
+    const openBtns = document.querySelectorAll('.open-lightbox');
+    const swipeHint = document.getElementById('swipe-hint');
+
+    let currentProjectIndex = 0;
+    let currentImageIndex = 0;
+    let currentGallery = [];
+
+    function openLightbox(projectIndex) {
+      currentProjectIndex = projectIndex;
+      currentImageIndex = 0;
+      const project = window.projectsData[projectIndex];
+      currentGallery = project.fullGallery;
+      
+      updateLightboxContent();
+      
+      lightbox.classList.remove('hidden');
+      // Trigger reflow
+      void lightbox.offsetWidth;
+      lightbox.classList.remove('opacity-0');
+      document.body.style.overflow = 'hidden';
+
+      // Show swipe hint on mobile
+      if (window.innerWidth < 768) {
+        setTimeout(() => {
+          swipeHint.classList.remove('opacity-0');
+          setTimeout(() => {
+            swipeHint.classList.add('opacity-0');
+          }, 2500);
+        }, 500);
+      }
+    }
+
+    function closeLightboxModal() {
+      lightbox.classList.add('opacity-0');
+      setTimeout(() => {
+        lightbox.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    function updateLightboxContent() {
+      const project = window.projectsData[currentProjectIndex];
+      const imageSrc = currentGallery[currentImageIndex].src;
+      
+      // Fade out image
+      lightboxImg.style.opacity = '0.5';
+      
+      setTimeout(() => {
+        lightboxImg.src = imageSrc;
+        lightboxTitle.textContent = project.title;
+        lightboxCounter.textContent = `${currentImageIndex + 1} / ${currentGallery.length}`;
+        lightboxImg.style.opacity = '1';
+      }, 150);
+    }
+
+    function nextImage() {
+      if (currentImageIndex < currentGallery.length - 1) {
+        currentImageIndex++;
+      } else {
+        currentImageIndex = 0; // Loop to start
+      }
+      updateLightboxContent();
+    }
+
+    function prevImage() {
+      if (currentImageIndex > 0) {
+        currentImageIndex--;
+      } else {
+        currentImageIndex = currentGallery.length - 1; // Loop to end
+      }
+      updateLightboxContent();
+    }
+
+    // Event Listeners
+    openBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const card = e.target.closest('.project-card');
+        const index = parseInt(card.dataset.projectIndex);
+        openLightbox(index);
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightboxModal);
+    
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextImage();
+    });
+
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prevImage();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.classList.contains('hidden')) return;
+      
+      if (e.key === 'Escape') closeLightboxModal();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    });
+
+    // Click outside to close
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightboxModal();
+    });
+
+    // Mobile Swipe Support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    lightbox.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const swipeThreshold = 50; // Minimum distance for a swipe
+      const swipeDistance = touchEndX - touchStartX;
+
+      if (Math.abs(swipeDistance) > swipeThreshold) {
+        if (swipeDistance < 0) {
+          // Swipe Left -> Next Image
+          nextImage();
+        } else {
+          // Swipe Right -> Prev Image
+          prevImage();
+        }
+      }
+    }
+  </script>
 
   <!-- CTA Section -->
   <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
