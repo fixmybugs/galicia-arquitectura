@@ -3,11 +3,9 @@ import indexImage from '../assets/index_image.webp';
 import { Image } from 'astro:assets';
 ---
 
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-gray-50 to-white pt-20">
-  <!-- Background Geometric Pattern -->
-  <div class="absolute inset-0 opacity-5">
-    <div class="absolute inset-0" style="background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px); background-size: 50px 50px;"></div>
-  </div>
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-white pt-20" id="hero-section">
+  <!-- Architectural Grid Pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px); background-size: 40px 40px;"></div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
     <div class="grid lg:grid-cols-2 gap-12 items-center">
@@ -20,11 +18,11 @@ import { Image } from 'astro:assets';
 
         <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight animate-slide-up">
           Diseñamos
-          <span class="block text-gray-600 mt-2">Espacios que</span>
+          <span class="block text-gray-600 mt-2 font-light">Espacios que</span>
           <span class="block mt-2">Inspiran</span>
         </h1>
 
-        <p class="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-xl animate-fade-in-delayed">
+        <p class="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-xl animate-fade-in-delayed font-light">
           Transformamos visiones en realidad arquitectónica. Cada proyecto es una obra de arte funcional que refleja la identidad y necesidades de nuestros clientes.
         </p>
 
@@ -42,34 +40,34 @@ import { Image } from 'astro:assets';
         <!-- Stats -->
         <div class="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200 animate-fade-in-delayed">
           <div>
-            <div class="text-3xl sm:text-4xl font-bold text-gray-900">30+</div>
-            <div class="text-sm text-gray-600 mt-1">Proyectos</div>
+            <div class="text-4xl sm:text-5xl font-bold text-gray-900 font-mono counter" data-target="30">0</div>
+            <div class="text-xs text-gray-500 uppercase tracking-widest mt-2">Proyectos</div>
           </div>
           <div>
-            <div class="text-3xl sm:text-4xl font-bold text-gray-900">100%</div>
-            <div class="text-sm text-gray-600 mt-1">Satisfacción</div>
+            <div class="text-4xl sm:text-5xl font-bold text-gray-900 font-mono counter" data-target="100">0</div>
+            <div class="text-xs text-gray-500 uppercase tracking-widest mt-2">Satisfacción %</div>
           </div>
           <div>
-            <div class="text-3xl sm:text-4xl font-bold text-gray-900">8+</div>
-            <div class="text-sm text-gray-600 mt-1">Años</div>
+            <div class="text-4xl sm:text-5xl font-bold text-gray-900 font-mono counter" data-target="8">0</div>
+            <div class="text-xs text-gray-500 uppercase tracking-widest mt-2">Años</div>
           </div>
         </div>
       </div>
 
       <!-- Image -->
-      <div class="relative animate-fade-in-right">
+      <div class="relative animate-fade-in-right group">
         <div class="relative z-10">
           <Image 
             src={indexImage} 
             alt="Modern Architecture" 
-            class="w-full h-auto rounded-lg shadow-2xl"
+            class="w-full h-auto shadow-2xl"
             width={800}
             height={1000}
           />
         </div>
         <!-- Decorative elements -->
-        <div class="absolute -top-4 -left-4 w-32 h-32 bg-gray-900 rounded-lg -z-10"></div>
-        <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-gray-200 rounded-lg -z-10"></div>
+        <div class="absolute -top-4 -left-4 w-32 h-32 bg-gray-900 -z-10 transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2"></div>
+        <div class="absolute -bottom-4 -right-4 w-32 h-32 border-2 border-gray-900 -z-10 transition-transform duration-500 group-hover:-translate-x-2 group-hover:-translate-y-2"></div>
       </div>
     </div>
   </div>
@@ -79,6 +77,47 @@ import { Image } from 'astro:assets';
     <span class="material-symbols-outlined text-4xl text-gray-400">expand_more</span>
   </div>
 </section>
+
+<script>
+  // Stats Counter Animation
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const counters = entry.target.querySelectorAll('.counter');
+        counters.forEach(counter => {
+          const target = parseInt(counter.getAttribute('data-target'));
+          const duration = 2000;
+          const step = target / (duration / 16);
+          let current = 0;
+
+          const updateCounter = () => {
+            current += step;
+            if (current < target) {
+              counter.textContent = Math.ceil(current).toString() + (counter.nextElementSibling.textContent.includes('%') ? '%' : '+');
+              requestAnimationFrame(updateCounter);
+            } else {
+              counter.textContent = target.toString() + (counter.nextElementSibling.textContent.includes('%') ? '%' : '+');
+            }
+          };
+          
+          updateCounter();
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  const heroSection = document.getElementById('hero-section');
+  if (heroSection) {
+    observer.observe(heroSection);
+  }
+</script>
 
 <style>
   .btn-primary {

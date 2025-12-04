@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import FooterModern from '../components/FooterModern.astro';
+import { Image } from 'astro:assets';
+import aboutImage from '../assets/about_image.webp';
 
 const values = [
   {
@@ -49,8 +51,11 @@ const team = [
   <Navbar />
   
   <!-- Hero Section -->
-  <section class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
-    <div class="max-w-7xl mx-auto">
+  <section class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-white overflow-hidden">
+    <!-- Architectural Grid Pattern -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px); background-size: 40px 40px;"></div>
+    
+    <div class="max-w-7xl mx-auto relative z-10">
       <div class="text-center mb-16">
         <div class="inline-flex items-center gap-2 bg-gray-900 text-white px-4 py-2 text-xs font-semibold tracking-widest uppercase mb-6">
           <span class="material-symbols-outlined text-sm">info</span>
@@ -59,7 +64,7 @@ const team = [
         <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-6">
           Nuestra Historia
         </h1>
-        <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+        <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto font-light">
           Más de 8 años transformando espacios y creando experiencias arquitectónicas únicas
         </p>
       </div>
@@ -67,37 +72,34 @@ const team = [
   </section>
 
   <!-- Story Section -->
-  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white border-t border-gray-100">
     <div class="max-w-7xl mx-auto">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <div class="mb-12">
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Visión
-            </h2>
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="space-y-12">
+          <div class="relative pl-8 border-l-2 border-gray-900">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Visión</h2>
             <p class="text-gray-600 text-lg leading-relaxed">
-              Ser una firma de arquitectura referente en soluciones innovadoras y contemporáneas, reconocida por nuestro enfoque minimalista y cálido que eleva la calidad de vida. Aspiramos a transformar la manera en que las personas habitan y experimentan sus espacios, promoviendo diseños sostenibles, sensibles y emocionalmente significativos.
+              Ser una firma de arquitectura referente en soluciones innovadoras y contemporáneas, reconocida por nuestro enfoque minimalista y cálido que eleva la calidad de vida. Aspiramos a transformar la manera en que las personas habitan y experimentan sus espacios.
             </p>
           </div>
 
-          <div>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Misión
-            </h2>
+          <div class="relative pl-8 border-l-2 border-gray-200 hover:border-gray-900 transition-colors duration-300">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Misión</h2>
             <p class="text-gray-600 text-lg leading-relaxed">
-              Crear espacios arquitectónicos que integren el minimalismo contemporáneo con una sensación de calidez humana, diseñando entornos funcionales, estéticos y atemporales. Nos enfocamos en comprender profundamente las necesidades de cada cliente para transformar sus ideas en espacios que inspiren bienestar, equilibrio y conexión.
+              Crear espacios arquitectónicos que integren el minimalismo contemporáneo con una sensación de calidez humana, diseñando entornos funcionales, estéticos y atemporales. Nos enfocamos en comprender profundamente las necesidades de cada cliente.
             </p>
           </div>
         </div>
-        <div class="relative">
-          <img 
-            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&h=1000&fit=crop" 
+        <div class="relative group">
+          <div class="absolute inset-0 bg-gray-900 translate-x-4 translate-y-4 rounded-lg -z-10 transition-transform duration-500 group-hover:translate-x-6 group-hover:translate-y-6"></div>
+          <Image 
+            src={aboutImage} 
             alt="Architecture"
-            class="w-full h-auto rounded-lg shadow-2xl"
+            class="w-full h-auto rounded-lg shadow-xl bg-white"
           />
-          <div class="absolute -bottom-8 -left-8 bg-gray-900 text-white p-8 rounded-lg max-w-xs">
-            <div class="text-4xl font-bold mb-2">8+</div>
-            <div class="text-sm">Años de experiencia transformando espacios</div>
+          <div class="absolute -bottom-8 -left-8 bg-white text-gray-900 p-8 rounded-lg max-w-xs shadow-2xl border border-gray-100">
+            <div class="text-5xl font-bold mb-2 font-mono">8+</div>
+            <div class="text-xs font-bold uppercase tracking-widest text-gray-500">Años de Experiencia</div>
           </div>
         </div>
       </div>
@@ -108,24 +110,22 @@ const team = [
   <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
           Nuestros Valores
         </h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-          Los principios que guían cada decisión y proyecto que realizamos
-        </p>
+        <div class="w-24 h-1 bg-gray-900 mx-auto"></div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {values.map((value) => (
           <div class="value-card group">
-            <div class="icon-container">
-              <span class="material-symbols-outlined">{value.icon}</span>
+            <div class="mb-6">
+              <span class="material-symbols-outlined text-4xl group-hover:scale-110 transition-transform duration-300">{value.icon}</span>
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-3">
+            <h3 class="text-lg font-bold text-gray-900 mb-3 uppercase tracking-wider">
               {value.title}
             </h3>
-            <p class="text-gray-600 text-sm leading-relaxed">
+            <p class="text-gray-500 text-sm leading-relaxed border-t border-gray-200 pt-4 mt-4 group-hover:border-gray-900 transition-colors">
               {value.description}
             </p>
           </div>
@@ -137,29 +137,29 @@ const team = [
   <!-- Team Section -->
   <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
     <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-          Nuestro Equipo
-        </h2>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-          Profesionales apasionados comprometidos con la excelencia arquitectónica
-        </p>
+      <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+        <div>
+          <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Nuestro Equipo</h2>
+          <p class="text-gray-600 max-w-xl">Profesionales apasionados comprometidos con la excelencia.</p>
+        </div>
+        <a href="/contacto" class="text-sm font-bold uppercase tracking-widest border-b-2 border-gray-900 pb-1 hover:text-gray-600 transition-colors">Unirse al equipo</a>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {team.map((member) => (
-          <div class="team-card group">
-            <div class="relative overflow-hidden rounded-lg aspect-square mb-6">
+          <div class="team-card group cursor-pointer">
+            <div class="relative overflow-hidden rounded-none aspect-[3/4] mb-6 bg-gray-100">
+              <div class="absolute inset-0 bg-gray-900/10 group-hover:bg-transparent transition-colors z-10"></div>
               <img 
                 src={member.image}
                 alt={member.name}
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
               />
             </div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">
+            <h3 class="text-xl font-bold text-gray-900 mb-1 group-hover:translate-x-2 transition-transform">
               {member.name}
             </h3>
-            <p class="text-gray-600 text-sm uppercase tracking-wider">
+            <p class="text-gray-500 text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform delay-75">
               {member.role}
             </p>
           </div>
@@ -169,24 +169,25 @@ const team = [
   </section>
 
   <!-- Stats Section -->
-  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white">
-    <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+  <section class="py-24 px-4 sm:px-6 lg:px-8 bg-gray-900 text-white relative overflow-hidden" id="stats-section">
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+    <div class="max-w-7xl mx-auto relative z-10">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-12 border-y border-gray-800 py-12">
         <div class="text-center">
-          <div class="text-4xl sm:text-5xl font-bold mb-2">30+</div>
-          <div class="text-sm sm:text-base text-gray-400">Proyectos Completados</div>
+          <div class="text-5xl sm:text-6xl font-bold mb-2 font-mono counter" data-target="30">0</div>
+          <div class="text-xs uppercase tracking-widest text-gray-500">Proyectos</div>
         </div>
         <div class="text-center">
-          <div class="text-4xl sm:text-5xl font-bold mb-2">100%</div>
-          <div class="text-sm sm:text-base text-gray-400">Satisfacción Cliente</div>
+          <div class="text-5xl sm:text-6xl font-bold mb-2 font-mono counter" data-target="100">0</div>
+          <div class="text-xs uppercase tracking-widest text-gray-500">Satisfacción %</div>
         </div>
         <div class="text-center">
-          <div class="text-4xl sm:text-5xl font-bold mb-2">8+</div>
-          <div class="text-sm sm:text-base text-gray-400">Años Experiencia</div>
+          <div class="text-5xl sm:text-6xl font-bold mb-2 font-mono counter" data-target="8">0</div>
+          <div class="text-xs uppercase tracking-widest text-gray-500">Años Exp.</div>
         </div>
         <div class="text-center">
-          <div class="text-4xl sm:text-5xl font-bold mb-2">15+</div>
-          <div class="text-sm sm:text-base text-gray-400">Profesionales</div>
+          <div class="text-5xl sm:text-6xl font-bold mb-2 font-mono counter" data-target="15">0</div>
+          <div class="text-xs uppercase tracking-widest text-gray-500">Expertos</div>
         </div>
       </div>
     </div>
@@ -208,24 +209,53 @@ const team = [
     </div>
   </section>
 
+  <script>
+    // Stats Counter Animation
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const counters = entry.target.querySelectorAll('.counter');
+          counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            const duration = 2000; // 2 seconds
+            const step = target / (duration / 16); // 60fps
+            let current = 0;
+
+            const updateCounter = () => {
+              current += step;
+              if (current < target) {
+                counter.textContent = Math.ceil(current).toString() + (counter.nextElementSibling.textContent.includes('%') ? '%' : '+');
+                requestAnimationFrame(updateCounter);
+              } else {
+                counter.textContent = target.toString() + (counter.nextElementSibling.textContent.includes('%') ? '%' : '+');
+              }
+            };
+            
+            updateCounter();
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    const statsSection = document.getElementById('stats-section');
+    if (statsSection) {
+      observer.observe(statsSection);
+    }
+  </script>
+
   <FooterModern />
 </Layout>
 
 <style>
   .value-card {
-    @apply bg-white border border-gray-200 rounded-lg p-8 transition-all duration-300 hover:shadow-xl hover:border-gray-300 hover:-translate-y-1;
-  }
-
-  .icon-container {
-    @apply w-16 h-16 bg-gray-900 text-white rounded-lg flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-gray-800 group-hover:scale-110;
-  }
-
-  .icon-container .material-symbols-outlined {
-    @apply text-3xl;
-  }
-
-  .team-card {
-    @apply text-center transition-all duration-300 hover:-translate-y-2;
+    @apply bg-white p-8 border-l-4 border-gray-200 transition-all duration-300 hover:border-gray-900 hover:bg-gray-50;
   }
 
   .btn-primary {
